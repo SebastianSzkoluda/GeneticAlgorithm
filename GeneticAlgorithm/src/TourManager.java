@@ -14,4 +14,12 @@ public class TourManager {
 		return destinationCities .size();
 		
 	}
+	public static ArrayList<Integer> getDestinationCities() {
+		return destinationCities;
+	}
+	public static void setDestinationCities(ArrayList<Integer> destinationCities) {
+		TourManager.destinationCities = destinationCities;
+	}
+	
+	
 }

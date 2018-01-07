@@ -2,18 +2,20 @@ import java.io.IOException;
 
 public class TSP_GeneticAlgorithm {
 
-	public static void main(String[] args) {
-		
+	public static void main(String[] args) throws IOException {
+		Integer[][] matrix;
 		InstanceFileReader file = new InstanceFileReader();
-		try {
-			CostsMatrix.setCostsMatrix(file.read("bayg29.tsp"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		
-		Population pop = new Population(CostsMatrix.getCostsMatrix().length, true);
+			matrix = file.read("bayg29.tsp");
+		
+		CostsMatrix.setCostsMatrix(matrix);
+		for(int i = 0;i<matrix.length;i++){
+			
+			TourManager.addCity(i);
+		}
+		Population pop = new Population(matrix.length, true);
 		System.out.println("Initial distance: " + pop.getFittest().getDistance());
+		System.out.println("Path of first best: " + pop.getFittest().getTour() );
 	}
 
 }

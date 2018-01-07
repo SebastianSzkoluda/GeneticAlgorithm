@@ -12,6 +12,7 @@ public class Population {
 				Tour newTour = new Tour();
 				newTour.generateOneTour();
 				saveTour(i, newTour);
+				
 			}
 		}
 	}
@@ -27,6 +28,7 @@ public class Population {
 	        for (int i = 1; i < populationSize(); i++) {
 	            if (fittest.getFitness() <= getTour(i).getFitness()) {
 	                fittest = getTour(i);
+	               // System.out.println(getTour(i).getFitness());
 	            }
 	        }
 	        return fittest;
