@@ -1,3 +1,4 @@
+import java.util.concurrent.ThreadLocalRandom;
 
 public class GeneticAlgorithm {
 	
@@ -5,7 +6,7 @@ public class GeneticAlgorithm {
     private static final int tournamentSize = 2;
     private static final boolean elitism = true;
     
-    public Tour tournament(Population population){
+    public static Tour tournament(Population population){
     	
     	Population toTournament = new Population(tournamentSize,false);
     	
@@ -18,7 +19,7 @@ public class GeneticAlgorithm {
 		return fittest;
     	
     }
-    public void mutate(Tour tour){
+    public static void mutate(Tour tour){
     	for(int i=0;i<tour.tourSize();i++){
     		if(Math.random() < mutationRate){
     			
@@ -31,34 +32,38 @@ public class GeneticAlgorithm {
     	}
     }
     
-    public Tour PMXCrossover(Tour parent1, Tour parent2){
+    public static Tour PMXCrossover(Tour parent1, Tour parent2){
     	
     	Tour child = new Tour();
-    	int startPos = (int) (Math.random() * parent1.tourSize());
-        int endPos = (int) (Math.random() * parent1.tourSize());
-        
-        for (int i = 0; i < child.tourSize(); i++) {
-           
-            if (startPos < endPos && i > startPos && i < endPos) {
-                child.setCity(i, parent1.getCity(i));
-            } 
-            else if (startPos > endPos) {
-                if (!(i < startPos && i > endPos)) {
-                    child.setCity(i, parent1.getCity(i));
-                }
-            }
+    	int randomNum = ThreadLocalRandom.current().nextInt(1, parent1.getTour().size() - 1);
+    	//System.out.println("Moja liczba: "+ randomNum);
+    	int startPos = ThreadLocalRandom.current().nextInt(1, parent1.getTour().size() - 1);
+    	System.out.println("Pozycja startowa: "+ startPos);
+        int endPos = 0;
+        if(startPos == 1){
+        	endPos = ThreadLocalRandom.current().nextInt(startPos+1, parent1.getTour().size() - 2);
+        	System.out.println("Pozycja koncowa jesli startowa 1: "+ endPos);
         }
+        else{
+        	endPos = ThreadLocalRandom.current().nextInt(startPos+1, parent1.getTour().size() - 1);
+        	System.out.println("Pozycja koncowa: "+ endPos);
+        }
+        for (int i = startPos; i <= endPos; i++) {
+			child.setCity(i, parent1.getCity(i));
+		}
+        
     	for(int i = startPos; i <= endPos; i++){
     		int cityToCheck = parent2.getCity(i);
     		boolean alreadyInChild = false;
     		
-    		for(int j = startPos; j<= endPos && !alreadyInChild; j++){
+    		for(int j = startPos; j <= endPos && !alreadyInChild; j++){
     			if(child.getCity(j) == cityToCheck){
     				alreadyInChild = true;
     			}
     		}
     		if(!alreadyInChild){
     			int foundPosition = findPositionForValueFromSecondParent(startPos,endPos,parent1,parent2,i);
+    			System.out.println("Znaleziona pozycja: " + foundPosition);
     			parent2.setCity(foundPosition, cityToCheck);    		
     		}
     	}
@@ -69,8 +74,9 @@ public class GeneticAlgorithm {
     
     
     
-    private void copyRemainingCities(Tour parent1, Tour parent2, Tour child, int startPos, int endPos) {
+    private static void copyRemainingCities(Tour parent1, Tour parent2, Tour child, int startPos, int endPos) {
     	for(int i = 1 ; i < startPos ; i++) {
+    		
 			if(child.getCity(i) == 0) {
 				child.setCity(i, parent2.getCity(i));
 			}
@@ -82,7 +88,8 @@ public class GeneticAlgorithm {
 		}
 		
 	}
-	private int findPositionForValueFromSecondParent(int startPos, int endPos, Tour parent1, Tour parent2, int currentPosition) {
+	private static int findPositionForValueFromSecondParent(int startPos, int endPos,
+			Tour parent1, Tour parent2, int currentPosition) {
 		int valueInFirstParent = parent1.getCity(currentPosition);
 		
 		boolean valueFound = false;
@@ -92,17 +99,23 @@ public class GeneticAlgorithm {
 			if(parent2.getCity(j) == valueInFirstParent){
 				valueFound = true;
 				foundIndex = j;
+				System.out.println("Znaleziona pozycja w petli z j: "+ foundIndex);
 			}
 		}
-		if(startPos <= foundIndex && endPos >= foundIndex){
+		System.out.println("Znaleziona pozycja przed ifem w metodzie findPosition: " + foundIndex);
+		if(startPos <= foundIndex && endPos >= foundIndex ){
 			return findPositionForValueFromSecondParent(startPos,endPos,parent1,parent2,foundIndex);
 		}else
 		{
+			System.out.println("Znaleziona pozycja przy return z metody findPosition: " + foundIndex);
 			return foundIndex;
+			
 		}
 		
 	}
-	public Population evolvePopulation(Population popToEvolve){
+	
+	public static Population evolvePopulation(Population popToEvolve){
+		System.out.println(popToEvolve.populationSize());
     	Population newPopulation = new Population(popToEvolve.populationSize(), false);
     	
     	  int positionOfBest = 0;
@@ -116,7 +129,8 @@ public class GeneticAlgorithm {
     		
     		Tour child = PMXCrossover(parent1, parent2);
     		
-    		newPopulation.saveTour(i, child);   		
+    		newPopulation.saveTour(i, child);  
+    		 System.out.println("Przeszla petla nr:" + i);
     	}
     	for(int i = positionOfBest;i<newPopulation.populationSize();i++){
     		mutate(newPopulation.getTour(i));

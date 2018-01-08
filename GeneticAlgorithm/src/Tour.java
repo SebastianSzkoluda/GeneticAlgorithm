@@ -20,7 +20,7 @@ public class Tour {
 
 	public Tour(){
 		for(int i=0;i<TourManager.numerOfCities();i++){
-			tour.add(null);
+			tour.add(0);
 		}
 	}
 	
@@ -36,8 +36,7 @@ public class Tour {
 	 public void setCity(int index,int city){
 		 tour.set(index, city);
 		 
-		 fitness = 0;
-		 distance = 0;
+		
 	 }
 	 public double getFitness() {
 	        if (fitness == 0) {

@@ -16,6 +16,19 @@ public class TSP_GeneticAlgorithm {
 		Population pop = new Population(matrix.length, true);
 		System.out.println("Initial distance: " + pop.getFittest().getDistance());
 		System.out.println("Path of first best: " + pop.getFittest().getTour() );
+		
+		 // pop = GeneticAlgorithm.evolvePopulation(pop);
+	        for (int i = 0; i < 100; i++) {
+	            pop = GeneticAlgorithm.evolvePopulation(pop);
+	           
+	        }
+		 
+	        System.out.println("Finished");
+	        System.out.println("Final distance: " + pop.getFittest().getDistance());
+	        System.out.println("Solution:");
+	        System.out.println(pop.getFittest().getTour());
+		
 	}
+	
 
 }
