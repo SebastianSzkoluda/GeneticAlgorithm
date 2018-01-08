@@ -20,7 +20,7 @@ public class TSP_GeneticAlgorithm {
 		 // pop = GeneticAlgorithm.evolvePopulation(pop);
 	        for (int i = 0; i < 100; i++) {
 	            pop = GeneticAlgorithm.evolvePopulation(pop);
-	           
+	           System.out.println("Koniec petli nr:" + i);
 	        }
 		 
 	        System.out.println("Finished");

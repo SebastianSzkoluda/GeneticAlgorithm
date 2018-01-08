@@ -38,15 +38,15 @@ public class GeneticAlgorithm {
     	int randomNum = ThreadLocalRandom.current().nextInt(1, parent1.getTour().size() - 1);
     	//System.out.println("Moja liczba: "+ randomNum);
     	int startPos = ThreadLocalRandom.current().nextInt(1, parent1.getTour().size() - 1);
-    	System.out.println("Pozycja startowa: "+ startPos);
+    	//System.out.println("Pozycja startowa: "+ startPos);
         int endPos = 0;
         if(startPos == 1){
         	endPos = ThreadLocalRandom.current().nextInt(startPos, parent1.getTour().size() - 2);
-        	System.out.println("Pozycja koncowa jesli startowa 1: "+ endPos);
+        	//System.out.println("Pozycja koncowa jesli startowa 1: "+ endPos);
         }
         else{
         	endPos = ThreadLocalRandom.current().nextInt(startPos, parent1.getTour().size() - 1);
-        	System.out.println("Pozycja koncowa: "+ endPos);
+        	//System.out.println("Pozycja koncowa: "+ endPos);
         }
         for (int i = startPos; i <= endPos; i++) {
 			child.setCity(i, parent1.getCity(i));
@@ -63,7 +63,7 @@ public class GeneticAlgorithm {
     		}
     		if(!alreadyInChild){
     			int foundPosition = findPositionForValueFromSecondParent(startPos,endPos,parent1,parent2,i);
-    			System.out.println("Znaleziona pozycja: " + foundPosition);
+    			//System.out.println("Znaleziona pozycja: " + foundPosition);
     			child.setCity(foundPosition, cityToCheck);    		
     		}
     	}
@@ -94,20 +94,22 @@ public class GeneticAlgorithm {
 		
 		boolean valueFound = false;
 		int foundIndex = -1;
-		
-		for(int j=1;j<=parent2.tourSize()-2 && !valueFound;j++){
+		//System.out.println("Dlugosc sciezki rodzica nr 2: " + parent2.tourSize());
+		for(int j=1;j<=parent2.tourSize()-1 && !valueFound;j++){
 			if(parent2.getCity(j) == valueInFirstParent){
-				valueFound = true;
+				
 				foundIndex = j;
-				System.out.println("Znaleziona pozycja w petli z j: "+ foundIndex);
+				valueFound = true;
+				//System.out.println("Znaleziona pozycja w petli z j: "+ foundIndex);
 			}
+			
 		}
-		System.out.println("Znaleziona pozycja przed ifem w metodzie findPosition: " + foundIndex);
+		//System.out.println("Znaleziona pozycja przed ifem w metodzie findPosition: " + foundIndex);
 		if(startPos <= foundIndex && endPos >= foundIndex ){
 			return findPositionForValueFromSecondParent(startPos,endPos,parent1,parent2,foundIndex);
 		}else
 		{
-			System.out.println("Znaleziona pozycja przy return z metody findPosition: " + foundIndex);
+			//System.out.println("Znaleziona pozycja przy return z metody findPosition: " + foundIndex);
 			return foundIndex;
 			
 		}
@@ -115,7 +117,7 @@ public class GeneticAlgorithm {
 	}
 	
 	public static Population evolvePopulation(Population popToEvolve){
-		System.out.println(popToEvolve.populationSize());
+		
     	Population newPopulation = new Population(popToEvolve.populationSize(), false);
     	
     	  int positionOfBest = 0;
@@ -123,6 +125,7 @@ public class GeneticAlgorithm {
               newPopulation.saveTour(0, popToEvolve.getFittest());
               positionOfBest = 1;
           }
+         // System.out.println("Rozmiar nowej populacji: "+ newPopulation.populationSize());
     	for(int i = positionOfBest;i<newPopulation.populationSize();i++){
     		Tour parent1 = tournament(popToEvolve);
     		Tour parent2 = tournament(popToEvolve);

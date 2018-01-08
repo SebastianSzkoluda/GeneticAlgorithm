@@ -53,7 +53,12 @@ public class Tour {
 			 tour.set(i, TourManager.getCity(i));
 		 }
 		 Collections.shuffle(tour);
+		 
 		 for(int i = 0;i<TourManager.numerOfCities();i++){
+			 if(tour.get(i) == 0){
+				 Collections.swap(tour, 0, i);
+			 }
+			 
 			// System.out.print(tour.get(i));
 			 if(i!=TourManager.numerOfCities()-1){
 				// System.out.print(" --> ");
