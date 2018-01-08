@@ -41,11 +41,11 @@ public class GeneticAlgorithm {
     	System.out.println("Pozycja startowa: "+ startPos);
         int endPos = 0;
         if(startPos == 1){
-        	endPos = ThreadLocalRandom.current().nextInt(startPos+1, parent1.getTour().size() - 2);
+        	endPos = ThreadLocalRandom.current().nextInt(startPos, parent1.getTour().size() - 2);
         	System.out.println("Pozycja koncowa jesli startowa 1: "+ endPos);
         }
         else{
-        	endPos = ThreadLocalRandom.current().nextInt(startPos+1, parent1.getTour().size() - 1);
+        	endPos = ThreadLocalRandom.current().nextInt(startPos, parent1.getTour().size() - 1);
         	System.out.println("Pozycja koncowa: "+ endPos);
         }
         for (int i = startPos; i <= endPos; i++) {
@@ -64,7 +64,7 @@ public class GeneticAlgorithm {
     		if(!alreadyInChild){
     			int foundPosition = findPositionForValueFromSecondParent(startPos,endPos,parent1,parent2,i);
     			System.out.println("Znaleziona pozycja: " + foundPosition);
-    			parent2.setCity(foundPosition, cityToCheck);    		
+    			child.setCity(foundPosition, cityToCheck);    		
     		}
     	}
     	copyRemainingCities(parent1,parent2,child,startPos,endPos);
