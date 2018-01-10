@@ -1,3 +1,4 @@
+import java.util.Collections;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class GeneticAlgorithm {
@@ -25,8 +26,7 @@ public class GeneticAlgorithm {
     			
     			int cityPos = (int) (Math.random() * tour.tourSize());
     			
-    			tour.setCity(cityPos, tour.getCity(i));
-    			tour.setCity(i, tour.getCity(cityPos));
+    			Collections.swap(tour.getTour(), i, cityPos);
     			
     		}
     	}
@@ -48,6 +48,7 @@ public class GeneticAlgorithm {
         	endPos = ThreadLocalRandom.current().nextInt(startPos, parent1.getTour().size() - 1);
         	//System.out.println("Pozycja koncowa: "+ endPos);
         }
+        
         for (int i = startPos; i <= endPos; i++) {
 			child.setCity(i, parent1.getCity(i));
 		}
@@ -81,7 +82,7 @@ public class GeneticAlgorithm {
 				child.setCity(i, parent2.getCity(i));
 			}
 		}
-    	for(int i = endPos ; i < parent1.tourSize() - 1 ; i++) {
+    	for(int i = endPos ; i < parent1.tourSize() ; i++) {
 			if(child.getCity(i) == 0) {
 				child.setCity(i, parent2.getCity(i));
 			}
@@ -133,11 +134,11 @@ public class GeneticAlgorithm {
     		Tour child = PMXCrossover(parent1, parent2);
     		
     		newPopulation.saveTour(i, child);  
-    		 System.out.println("Przeszla petla nr:" + i);
+    		// System.out.println("Przeszla petla nr:" + i);
     	}
-    	for(int i = positionOfBest;i<newPopulation.populationSize();i++){
-    		mutate(newPopulation.getTour(i));
-    	}
+    	//for(int i = positionOfBest;i<newPopulation.populationSize();i++){
+    		//mutate(newPopulation.getTour(i));
+    	//}
     	
 		return newPopulation;
     	
